@@ -6,3 +6,11 @@ datasource db {
   provider = "sqlite"
   url      = "file:tasks.db"
 }
+
+model Task {
+  id        String  @id @default(uuid())
+  title     String  @unique
+  url       String?
+  status    Int
+  userEmail String
+}
