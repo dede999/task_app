@@ -1,4 +1,5 @@
 import AttemptModel from "./attempt";
+import { PrismaClient } from "@prisma/client";
 
 export enum TaskStatus {
   IDLE,
@@ -9,21 +10,45 @@ export enum TaskStatus {
 }
 
 export class TaskModel {
-  nome: string;
-  id?: number;
+  title: string = "";
+  id: string = "";
   url?: string;
   userEmail: string;
   attempts: AttemptModel[] = [];
   status: TaskStatus = TaskStatus.IDLE;
 
-  constructor(nome: string, userMail: string) {
-    this.nome = nome;
+  private static client = new PrismaClient()
+
+  constructor(userMail: string) {
     this.userEmail = userMail;
   }
 
-  setUrl(url: string) {
+  async save() {
+    const saved = TaskModel.client.task.upsert({
+      where: {
+        id: this.id
+      },
+      create: {
+        title: this.title,
+        url: this.url,
+        userEmail: this.userEmail,
+        status: this.status
+      },
+      update: {
+        title: this.title,
+        status: this.status,
+        url: this.url
+      }
+    })
+
+    return saved
+  }
+
+  async setUrl(url: string) {
     this.url = url;
     this.setStatus(TaskStatus.READY)
+
+    await this.save()
   }
 
   setStatus(status: TaskStatus) {
