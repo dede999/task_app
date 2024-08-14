@@ -59,11 +59,15 @@ export class TaskModel {
     return this.status === TaskStatus.READY || this.status === TaskStatus.ERROR
   }
 
-  generateNewAttempt() {
-    const newAttempt = new AttemptModel(this.id)
-    if (newAttempt.success) this.setStatus(TaskStatus.DONE)
-    else this.setStatus(TaskStatus.ERROR)
+  async loadTaskAttempts() {
+    if (this.id === undefined) {
+      return []
+    }
 
-    this.attempts.push(newAttempt)
+    return TaskModel.client.attempt.findMany({
+      where: {
+        taskId: this.id
+      }
+    })
   }
 }
