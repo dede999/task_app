@@ -9,6 +9,14 @@ export enum TaskStatus {
   ERROR,
 }
 
+export type Task = {
+  title: string;
+  id: string;
+  url: string | null;
+  userEmail: string;
+  attempts: AttemptModel[];  
+}
+
 export class TaskModel {
   title: string = "";
   id: string = "";
@@ -19,7 +27,26 @@ export class TaskModel {
 
   private static client = new PrismaClient()
 
-  constructor(userMail: string) {
+  static async getTasks(email: string): Promise<Task[]> {
+    const tasks = await TaskModel.client.task.findMany({
+      where: {
+        userEmail: email
+      },
+      include: {
+        attempts: true
+      }
+    })
+
+    return tasks.map((task) => ({
+      title: task.title,
+      id: task.id,
+      url: task.url,
+      userEmail: task.userEmail,
+      attempts: task.attempts,
+      status: task.status
+    }))
+  }
+    constructor(userMail: string) {
     this.userEmail = userMail;
   }
 

@@ -1,9 +1,9 @@
 export default class AttemptModel {
-  taskId?: number;
-  id?: number;
+  taskId?: string;
+  id?: string;
   success: boolean;
 
-  constructor(taskID: number | undefined) {
+  constructor(taskID: string | undefined) {
     this.success = Math.random() < 0.5;
   }
 }
