@@ -14,6 +14,7 @@ export type Task = {
   id: string;
   url: string | null;
   userEmail: string;
+  status: TaskStatus;
   attempts: AttemptModel[];  
 }
 
@@ -46,7 +47,8 @@ export class TaskModel {
       status: task.status
     }))
   }
-    constructor(userMail: string) {
+  
+  constructor(userMail: string) {
     this.userEmail = userMail;
   }
 
