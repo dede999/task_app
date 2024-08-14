@@ -8,9 +8,19 @@ datasource db {
 }
 
 model Task {
-  id        String  @id @default(uuid())
-  title     String  @unique
+  id        String    @id @default(uuid())
+  title     String    @unique
   url       String?
   status    Int
   userEmail String
+  attempts  Attempt[]
+}
+
+model Attempt {
+  id          String   @id @default(uuid())
+  taskId      String
+  createdAt   DateTime @default(now())
+  success     Boolean
+  railsDataId Int
+  task        Task     @relation(fields: [taskId], references: [id])
 }
