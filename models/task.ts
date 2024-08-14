@@ -70,4 +70,16 @@ export class TaskModel {
       }
     })
   }
+
+  async deleteTask() {
+    if (this.id === undefined) {
+      return;
+    }
+
+    await TaskModel.client.task.delete({
+      where: {
+        id: this.id
+      }
+    })
+  }
 }
