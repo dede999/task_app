@@ -1,4 +1,5 @@
 import Navbar from "@/components/Navbar";
+import TaskList from "@/components/Task/List";
 import Entrance from "@/components/User/Entrance";
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
       <Navbar />
       <div className="my-5 text-center">
         <Entrance />
+        <TaskList />
       </div>
     </main>
   );
